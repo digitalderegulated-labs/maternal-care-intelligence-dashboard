@@ -10,58 +10,42 @@ These dashboards include short "Insights" sections that explain what the data me
 Note: These insights are examples of how an analyst might interpret the data. They are included for educational
 and demonstration purposes and should not be considered formal operational guidance.
 
-# Maternal Health Industry Intelligence Dashboard
+# Maternal Care Intelligence Dashboard
 
-This project demonstrates how maternal health companies measure program impact using publicly reported outcomes.
+Live App:
+https://digitalderegulated-labs-maternal-care-intellig-dashboard-fldb9c.streamlit.app/
 
-The dashboard visualizes clinical, operational, and financial metrics used by payers, employers, and digital maternity platforms.
+## Overview
 
-## Objective
+Maternal and infant care data can be difficult for non-medical users to interpret.
 
-To model the key metrics used in maternal health programs and demonstrate industry understanding of maternal care analytics.
+This dashboard demonstrates how care metrics can be visualized in a way
+that parents and care providers can easily understand.
 
-Rather than using synthetic patient datasets, the dashboard uses publicly reported outcomes and industry statistics.
+The focus is on translating healthcare data into clear insights.
 
-## Metrics Included
+## Key Features
 
-Clinical outcomes
-- Preterm birth reduction
-- NICU admission reduction
-- Emergency department visit reduction
-- NICU length of stay
+Maternal recovery tracking
 
-Financial outcomes
-- Total cost of care reduction
-- Payer ROI
+Infant care metrics
 
-Employer outcomes
-- employee retention impact
-- productivity improvements
-- mental health outcomes
+Trend visualization
 
-## Sources
+Plain-language insights
 
-Pomelo Care clinical outcomes publications
-Maven Clinic employer outcomes reports
-Peer-reviewed maternal health research
+## Example Insights
 
-## Technology
+Signal  
+Infant feeding frequency increased during the first two months.
 
-Streamlit  
-Python  
-Plotly
+Implication  
+This aligns with typical early-stage feeding patterns.
+
+Next Step  
+Care providers may monitor feeding consistency and weight gain trends.
 
 ## Purpose
 
-This project demonstrates how maternal health programs communicate value to:
-
-Health plans  
-Employers  
-Investors  
-
-The dashboard is designed to resemble an executive analytics interface used in digital health companies.
-
-## Author
-
-Casey Min  
-Digital Deregulated Labs
+This project demonstrates how healthcare-related data can be presented in
+accessible dashboards that support patient understanding and care coordination.
