@@ -1,147 +1,207 @@
 import streamlit as st
-import plotly.express as px
+import plotly.graph_objects as go
 import pandas as pd
 
 st.set_page_config(
-    page_title="Maternal Health Industry Intelligence",
+    page_title="Maternal Health Outcomes Intelligence",
     layout="wide"
 )
 
-st.title("Maternal Health Industry Intelligence Dashboard")
+st.title("Maternal Health Outcomes Intelligence Dashboard")
 
-st.markdown("""
-Executive overview of maternal health outcomes reported by digital maternity care platforms.
-Metrics reflect publicly reported outcomes used by payers and employers to evaluate maternal care programs.
-""")
+st.markdown(
+"""
+Executive analytics view of maternal health program outcomes reported by leading digital maternity care providers.
+"""
+)
 
 st.divider()
 
-# ====================================
-# KPI PANEL
-# ====================================
+# ======================================
+# EXECUTIVE KPI TILES
+# ======================================
 
-st.header("Industry Outcome Highlights")
+st.subheader("Industry Outcome Highlights")
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
 col1.metric("Preterm Birth Reduction", "37%")
-col1.metric("NICU Admission Reduction", "58%")
+col2.metric("NICU Admission Reduction", "58%")
+col3.metric("Emergency Visit Reduction", "46%")
+col4.metric("NICU Length of Stay Reduction", "6.8 days")
 
-col2.metric("ER Visit Reduction", "46%")
-col2.metric("NICU Length of Stay Reduction", "6.8 days")
+col5, col6 = st.columns(2)
 
-col3.metric("Cost of Care Reduction", "15%")
-col3.metric("Payer ROI", "3-5x")
+col5.metric("Total Cost Reduction", "8.8%")
+col6.metric("Payer Return on Investment", "3.9x")
 
-st.caption("Source: Pomelo Care clinical outcomes and peer-reviewed program data.")
+st.caption("Source: Pomelo Care clinical outcomes publications and payer program reports.")
 
 st.divider()
 
-# ====================================
+# ======================================
 # CLINICAL OUTCOMES
-# ====================================
+# ======================================
 
 st.header("Clinical Outcome Improvements")
 
-clinical = pd.DataFrame({
+clinical_metrics = {
     "Metric":[
         "Preterm Birth Reduction",
         "NICU Admission Reduction",
-        "ER Visit Reduction"
+        "Emergency Department Reduction"
     ],
-    "Improvement":[37,58,46]
-})
+    "Improvement (%)":[
+        37,
+        58,
+        46
+    ]
+}
 
-fig = px.bar(
-    clinical,
-    x="Metric",
-    y="Improvement",
-    color="Metric",
-    title="Maternal Program Clinical Outcomes"
+df_clinical = pd.DataFrame(clinical_metrics)
+
+fig = go.Figure()
+
+fig.add_trace(go.Bar(
+    x=df_clinical["Metric"],
+    y=df_clinical["Improvement (%)"],
+    marker_color=["#1f77b4","#2ca02c","#ff7f0e"]
+))
+
+fig.update_layout(
+    template="plotly_dark",
+    yaxis_title="Improvement Percentage",
+    xaxis_title="Clinical Metric",
+    height=450
 )
 
 st.plotly_chart(fig,use_container_width=True)
 
-st.caption("""
-Sources: Pomelo Care clinical outcomes publications and peer-reviewed analyses demonstrating reductions in preterm birth,
-NICU admissions, and emergency department utilization.
-""")
+st.caption("Source: Pomelo Care outcomes study and SMFM Global Congress presentations.")
 
 st.divider()
 
-# ====================================
+# ======================================
 # COST IMPACT
-# ====================================
+# ======================================
 
-st.header("Cost & Payer ROI Impact")
+st.header("Cost & Payer Impact")
 
-cost = pd.DataFrame({
+cost_metrics = {
     "Metric":[
-        "Total Cost Reduction",
-        "Payer ROI"
+        "Total Cost of Care Reduction",
+        "Return on Investment"
     ],
     "Value":[
-        15,
+        8.8,
         3.9
     ]
-})
+}
 
-fig = px.bar(
-    cost,
-    x="Metric",
-    y="Value",
-    color="Metric",
-    title="Maternal Care Financial Impact"
+df_cost = pd.DataFrame(cost_metrics)
+
+fig = go.Figure()
+
+fig.add_trace(go.Bar(
+    x=df_cost["Metric"],
+    y=df_cost["Value"],
+    marker_color=["#9467bd","#17becf"]
+))
+
+fig.update_layout(
+    template="plotly_dark",
+    yaxis_title="Value",
+    xaxis_title="Financial Metric",
+    height=450
 )
 
 st.plotly_chart(fig,use_container_width=True)
 
-st.caption("""
-Sources: Pomelo Care peer-reviewed outcomes reporting reduced cost of care and
-~3–5x return on investment for payer programs.
-""")
+st.caption("Source: Pomelo Care payer program analysis and peer-reviewed outcomes reporting.")
 
 st.divider()
 
-# ====================================
+# ======================================
 # EMPLOYER IMPACT
-# ====================================
+# ======================================
 
-st.header("Employer & Workforce Outcomes")
+st.header("Employer Workforce Outcomes")
 
-employer = pd.DataFrame({
+employer_metrics = {
     "Metric":[
-        "Employee Retention Impact",
-        "Productivity Increase",
-        "Mental Health Improvement"
+        "Employee Retention Likelihood",
+        "Mental Health Support Improvement"
     ],
     "Value":[
         74,
-        83,
         33
     ]
-})
+}
 
-fig = px.bar(
-    employer,
-    x="Metric",
-    y="Value",
-    color="Metric",
-    title="Employer Impact Metrics"
+df_employer = pd.DataFrame(employer_metrics)
+
+fig = go.Figure()
+
+fig.add_trace(go.Bar(
+    x=df_employer["Metric"],
+    y=df_employer["Value"],
+    marker_color=["#e377c2","#bcbd22"]
+))
+
+fig.update_layout(
+    template="plotly_dark",
+    yaxis_title="Percentage",
+    xaxis_title="Employer Outcome Metric",
+    height=450
 )
 
 st.plotly_chart(fig,use_container_width=True)
 
-st.caption("""
-Sources: Maven Clinic employer benefit outcomes reporting improved employee retention,
-productivity, and maternal mental health outcomes.
-""")
+st.caption("Source: Maven Clinic employer benefits outcomes reporting.")
 
 st.divider()
 
-# ====================================
-# INDUSTRY PROVIDER LANDSCAPE
-# ====================================
+# ======================================
+# NICU COST CONTEXT
+# ======================================
+
+st.header("NICU Cost Impact Context")
+
+nicu_data = {
+    "Metric":[
+        "Average NICU Cost Per Infant"
+    ],
+    "Value":[
+        45000
+    ]
+}
+
+df_nicu = pd.DataFrame(nicu_data)
+
+fig = go.Figure()
+
+fig.add_trace(go.Bar(
+    x=df_nicu["Metric"],
+    y=df_nicu["Value"],
+    marker_color="#d62728"
+))
+
+fig.update_layout(
+    template="plotly_dark",
+    yaxis_title="Cost (USD)",
+    xaxis_title="Healthcare Cost Metric",
+    height=450
+)
+
+st.plotly_chart(fig,use_container_width=True)
+
+st.caption("Source: March of Dimes and U.S. maternal healthcare cost analyses.")
+
+st.divider()
+
+# ======================================
+# INDUSTRY LANDSCAPE
+# ======================================
 
 st.header("Digital Maternal Health Platform Landscape")
 
@@ -153,8 +213,8 @@ providers = pd.DataFrame({
         "Progyny",
         "Wildflower Health"
     ],
-    "Focus":[
-        "Virtual maternity care",
+    "Primary Focus":[
+        "Virtual maternity care programs",
         "Women's and family health platform",
         "Global fertility and family benefits",
         "Fertility and maternity benefits",
@@ -162,12 +222,10 @@ providers = pd.DataFrame({
     ]
 })
 
-st.table(providers)
+st.dataframe(providers,use_container_width=True)
 
-st.caption("""
-Sources: company websites and industry reports describing maternal and family health platforms.
-""")
+st.caption("Sources: Company websites and public investor materials.")
 
 st.divider()
 
-st.caption("Digital Deregulated Labs | Maternal Health Industry Intelligence Dashboard")
+st.caption("Digital Deregulated Labs | Maternal Health Outcomes Intelligence")
