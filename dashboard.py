@@ -15,47 +15,10 @@ st.markdown("""
 # Maternal Health Outcomes Intelligence
 **Digital Deregulated Labs | Population Health Analytics**
 
-Maternal health indicators related to pregnancy outcomes, neonatal care utilization, and maternity care delivery programs across the United States.
+Maternal health indicators related to pregnancy outcomes, neonatal care utilization, and maternity care delivery programs in the United States.
 """)
 
 st.divider()
-
-# --------------------------------------------------
-# GLOBAL FILTER PANEL
-# --------------------------------------------------
-
-st.sidebar.header("Data Filters")
-
-region = st.sidebar.selectbox(
-    "Region",
-    ["United States","Global"]
-)
-
-year = st.sidebar.selectbox(
-    "Year",
-    ["2024","2023","2022"]
-)
-
-population = st.sidebar.selectbox(
-    "Population Segment",
-    ["Commercial","Medicaid","Employer Programs"]
-)
-
-st.caption(f"Region: {region} | Year: {year} | Population Segment: {population}")
-
-st.divider()
-
-# --------------------------------------------------
-# KPI DATA
-# --------------------------------------------------
-
-kpi_data = {
-    "Commercial":{"preterm":37,"nicu":58,"er":46},
-    "Medicaid":{"preterm":22,"nicu":30,"er":28},
-    "Employer Programs":{"preterm":37,"nicu":58,"er":46}
-}
-
-kpis = kpi_data[population]
 
 # --------------------------------------------------
 # KPI PANEL
@@ -63,24 +26,24 @@ kpis = kpi_data[population]
 
 st.subheader("Program Outcome Indicators")
 
-c1,c2,c3,c4 = st.columns(4)
+col1,col2,col3,col4 = st.columns(4)
 
-c1.metric("Preterm Birth Reduction",f"{kpis['preterm']}%")
-c2.metric("NICU Admission Reduction",f"{kpis['nicu']}%")
-c3.metric("Emergency Visit Reduction",f"{kpis['er']}%")
-c4.metric("NICU Length of Stay Reduction","6.8 days")
+col1.metric("Preterm Birth Reduction","37%")
+col2.metric("NICU Admission Reduction","58%")
+col3.metric("Emergency Department Visit Reduction","46%")
+col4.metric("NICU Length of Stay Reduction","6.8 days")
 
-c5,c6 = st.columns(2)
+col5,col6 = st.columns(2)
 
-c5.metric("Total Cost of Care Reduction","8.8%")
-c6.metric("Program ROI","3.9x")
+col5.metric("Total Cost of Care Reduction","8.8%")
+col6.metric("Program ROI","3.9x")
 
 st.caption("Source: Pomelo Care maternal health outcomes publications.")
 
 st.divider()
 
 # --------------------------------------------------
-# DASHBOARD TABS
+# TABS
 # --------------------------------------------------
 
 tab1, tab2, tab3 = st.tabs(["Clinical Outcomes","Geographic Distribution","Cost Context"])
@@ -93,7 +56,7 @@ with tab1:
 
     st.subheader("Clinical Outcome Improvements")
 
-    outcomes = pd.DataFrame({
+    clinical_data = pd.DataFrame({
         "Outcome":[
             "Preterm Birth Reduction",
             "NICU Admission Reduction",
@@ -103,7 +66,7 @@ with tab1:
     })
 
     fig = px.bar(
-        outcomes,
+        clinical_data,
         x="Outcome",
         y="Improvement",
         color="Outcome",
@@ -122,29 +85,17 @@ with tab1:
 Programs providing coordinated maternal care have demonstrated measurable reductions in preterm birth, neonatal intensive care utilization, and emergency department visits during pregnancy.
 """)
 
-    # --------------------------------------------
-    # TREND CHART
-    # --------------------------------------------
-
     st.subheader("Preterm Birth Rate Trend")
 
     trend_data = pd.DataFrame({
         "Year":[2019,2020,2021,2022,2023],
-        "US":[10.2,10.1,10.5,10.4,10.2],
-        "Global":[9.5,9.4,9.7,9.8,9.6]
+        "Rate":[10.2,10.1,10.5,10.4,10.2]
     })
-
-    region_map = {
-        "United States":"US",
-        "Global":"Global"
-    }
-
-    selected_column = region_map[region]
 
     fig_trend = px.line(
         trend_data,
         x="Year",
-        y=selected_column,
+        y="Rate",
         markers=True,
         template="plotly_white"
     )
@@ -160,28 +111,20 @@ Programs providing coordinated maternal care have demonstrated measurable reduct
     st.markdown("""
 **Insights**
 
-Preterm birth rates in the United States remain near 10% of births annually and are a major driver of neonatal intensive care utilization and healthcare spending.
+Preterm birth rates in the United States have remained near 10% of births annually and represent a significant driver of neonatal intensive care utilization.
 """)
 
 # --------------------------------------------------
-# TAB 2 — GEOGRAPHIC MAP
+# TAB 2 — MAP
 # --------------------------------------------------
 
 with tab2:
 
     st.subheader("Preterm Birth Rate by State")
 
-    map_data = {
-        "2024":[8.8,10.9,10.2,9.3,11.2],
-        "2023":[9.1,11.2,10.5,9.5,11.5],
-        "2022":[9.3,11.5,10.8,9.8,11.7]
-    }
-
-    states = ["CA","TX","FL","NY","GA"]
-
     state_df = pd.DataFrame({
-        "state":states,
-        "preterm_rate":map_data[year]
+        "state":["CA","TX","FL","NY","GA"],
+        "preterm_rate":[8.8,10.9,10.2,9.3,11.2]
     })
 
     fig_map = px.choropleth(
@@ -201,12 +144,8 @@ with tab2:
     st.markdown("""
 **Insights**
 
-Maternal health outcomes vary significantly by state, reflecting differences in healthcare access, socioeconomic conditions, and maternal health infrastructure.
+Maternal health outcomes vary significantly across states due to differences in healthcare access, maternal health infrastructure, and socioeconomic conditions.
 """)
-
-    # --------------------------------------------
-    # ENTERPRISE FEATURE — STATE RANKING
-    # --------------------------------------------
 
     st.subheader("State Ranking")
 
@@ -219,6 +158,8 @@ Maternal health outcomes vary significantly by state, reflecting differences in 
         }),
         use_container_width=True
     )
+
+    st.caption("Source: CDC maternal health surveillance.")
 
 # --------------------------------------------------
 # TAB 3 — COST CONTEXT
@@ -254,7 +195,7 @@ with tab3:
     st.markdown("""
 **Insights**
 
-Neonatal intensive care admissions represent one of the largest cost drivers in maternal healthcare. Programs focused on reducing preterm birth and improving prenatal care access can significantly reduce neonatal healthcare expenditures.
+Neonatal intensive care admissions represent one of the largest cost drivers in maternal healthcare. Reducing preterm birth rates can significantly reduce neonatal healthcare spending.
 """)
 
 st.divider()
