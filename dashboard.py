@@ -7,22 +7,22 @@ st.set_page_config(
     layout="wide"
 )
 
-# ----------------------------------------------------
+# --------------------------------------------------
 # HEADER
-# ----------------------------------------------------
+# --------------------------------------------------
 
 st.markdown("""
 # Maternal Health Outcomes Intelligence
 **Digital Deregulated Labs | Population Health Analytics**
 
-Maternal health indicators related to pregnancy outcomes, neonatal care utilization, and maternity care delivery programs in the United States.
+Maternal health indicators related to pregnancy outcomes, neonatal care utilization, and maternity care delivery programs across the United States.
 """)
 
 st.divider()
 
-# ----------------------------------------------------
+# --------------------------------------------------
 # GLOBAL FILTER PANEL
-# ----------------------------------------------------
+# --------------------------------------------------
 
 st.sidebar.header("Data Filters")
 
@@ -45,67 +45,55 @@ st.caption(f"Region: {region} | Year: {year} | Population Segment: {population}"
 
 st.divider()
 
-# ----------------------------------------------------
+# --------------------------------------------------
 # KPI DATA
-# ----------------------------------------------------
+# --------------------------------------------------
 
 kpi_data = {
-    "Commercial":{
-        "preterm":37,
-        "nicu":58,
-        "er":46
-    },
-    "Medicaid":{
-        "preterm":22,
-        "nicu":30,
-        "er":28
-    },
-    "Employer Programs":{
-        "preterm":37,
-        "nicu":58,
-        "er":46
-    }
+    "Commercial":{"preterm":37,"nicu":58,"er":46},
+    "Medicaid":{"preterm":22,"nicu":30,"er":28},
+    "Employer Programs":{"preterm":37,"nicu":58,"er":46}
 }
 
 kpis = kpi_data[population]
 
-# ----------------------------------------------------
+# --------------------------------------------------
 # KPI PANEL
-# ----------------------------------------------------
+# --------------------------------------------------
 
 st.subheader("Program Outcome Indicators")
 
-col1,col2,col3,col4 = st.columns(4)
+c1,c2,c3,c4 = st.columns(4)
 
-col1.metric("Preterm Birth Reduction",f"{kpis['preterm']}%")
-col2.metric("NICU Admission Reduction",f"{kpis['nicu']}%")
-col3.metric("Emergency Visit Reduction",f"{kpis['er']}%")
-col4.metric("NICU Length of Stay Reduction","6.8 days")
+c1.metric("Preterm Birth Reduction",f"{kpis['preterm']}%")
+c2.metric("NICU Admission Reduction",f"{kpis['nicu']}%")
+c3.metric("Emergency Visit Reduction",f"{kpis['er']}%")
+c4.metric("NICU Length of Stay Reduction","6.8 days")
 
-col5,col6 = st.columns(2)
+c5,c6 = st.columns(2)
 
-col5.metric("Total Cost of Care Reduction","8.8%")
-col6.metric("Program ROI","3.9x")
+c5.metric("Total Cost of Care Reduction","8.8%")
+c6.metric("Program ROI","3.9x")
 
 st.caption("Source: Pomelo Care maternal health outcomes publications.")
 
 st.divider()
 
-# ----------------------------------------------------
-# TABS
-# ----------------------------------------------------
+# --------------------------------------------------
+# DASHBOARD TABS
+# --------------------------------------------------
 
 tab1, tab2, tab3 = st.tabs(["Clinical Outcomes","Geographic Distribution","Cost Context"])
 
-# ----------------------------------------------------
+# --------------------------------------------------
 # TAB 1 — CLINICAL OUTCOMES
-# ----------------------------------------------------
+# --------------------------------------------------
 
 with tab1:
 
     st.subheader("Clinical Outcome Improvements")
 
-    clinical_data = pd.DataFrame({
+    outcomes = pd.DataFrame({
         "Outcome":[
             "Preterm Birth Reduction",
             "NICU Admission Reduction",
@@ -115,7 +103,7 @@ with tab1:
     })
 
     fig = px.bar(
-        clinical_data,
+        outcomes,
         x="Outcome",
         y="Improvement",
         color="Outcome",
@@ -134,9 +122,9 @@ with tab1:
 Programs providing coordinated maternal care have demonstrated measurable reductions in preterm birth, neonatal intensive care utilization, and emergency department visits during pregnancy.
 """)
 
-    # -------------------------------------
+    # --------------------------------------------
     # TREND CHART
-    # -------------------------------------
+    # --------------------------------------------
 
     st.subheader("Preterm Birth Rate Trend")
 
@@ -146,12 +134,17 @@ Programs providing coordinated maternal care have demonstrated measurable reduct
         "Global":[9.5,9.4,9.7,9.8,9.6]
     })
 
-    trend_data["Rate"] = trend_data[region]
+    region_map = {
+        "United States":"US",
+        "Global":"Global"
+    }
+
+    selected_column = region_map[region]
 
     fig_trend = px.line(
         trend_data,
         x="Year",
-        y="Rate",
+        y=selected_column,
         markers=True,
         template="plotly_white"
     )
@@ -167,12 +160,12 @@ Programs providing coordinated maternal care have demonstrated measurable reduct
     st.markdown("""
 **Insights**
 
-Preterm birth rates in the United States have remained near 10% of births in recent years, representing a major driver of neonatal healthcare utilization and costs.
+Preterm birth rates in the United States remain near 10% of births annually and are a major driver of neonatal intensive care utilization and healthcare spending.
 """)
 
-# ----------------------------------------------------
-# TAB 2 — GEOGRAPHIC DISTRIBUTION
-# ----------------------------------------------------
+# --------------------------------------------------
+# TAB 2 — GEOGRAPHIC MAP
+# --------------------------------------------------
 
 with tab2:
 
@@ -208,12 +201,12 @@ with tab2:
     st.markdown("""
 **Insights**
 
-Preterm birth rates vary significantly across states, reflecting differences in maternal health access, socioeconomic factors, and healthcare infrastructure.
+Maternal health outcomes vary significantly by state, reflecting differences in healthcare access, socioeconomic conditions, and maternal health infrastructure.
 """)
 
-    # ----------------------------------------------------
-    # ENTERPRISE UPGRADE — STATE RANKING TABLE
-    # ----------------------------------------------------
+    # --------------------------------------------
+    # ENTERPRISE FEATURE — STATE RANKING
+    # --------------------------------------------
 
     st.subheader("State Ranking")
 
@@ -227,11 +220,9 @@ Preterm birth rates vary significantly across states, reflecting differences in 
         use_container_width=True
     )
 
-    st.caption("Source: CDC maternal health surveillance.")
-
-# ----------------------------------------------------
+# --------------------------------------------------
 # TAB 3 — COST CONTEXT
-# ----------------------------------------------------
+# --------------------------------------------------
 
 with tab3:
 
